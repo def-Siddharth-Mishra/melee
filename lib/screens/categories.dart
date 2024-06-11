@@ -9,9 +9,7 @@ class CategoriesScreen extends StatelessWidget {
 
   void _selectCategory(BuildContext context, Category category) {
     final filteredMeals = dummyMeals
-        .where(
-          (meal) => meal.categories.contains(category.id),
-        )
+        .where((meal) => meal.categories.contains(category.id))
         .toList();
 
     Navigator.of(context).push(
