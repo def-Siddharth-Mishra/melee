@@ -6,7 +6,10 @@ import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatefulWidget {
-  const CategoriesScreen({super.key, required this.availableMeals});
+  const CategoriesScreen({
+    super.key,
+    required this.availableMeals,
+  });
 
   final List<Meal> availableMeals;
 
@@ -76,9 +79,25 @@ class _CategoriesScreenState extends State<CategoriesScreen>
             )
         ],
       ),
-      builder: (context, child) => Padding(
-          padding: EdgeInsets.only(top: 100 - _animationController.value * 100),
-          child: child),
+      // builder: (context, child) => SlideTransition(
+      //   position: _animationController.drive(
+      //     Tween(
+      //       begin: const Offset(0, 0.3),
+      //       end: const Offset(0, 0),
+      //     ),
+      //   ),
+      //   child: child,
+      // ),
+      builder: (context, child) => SlideTransition(
+        position: Tween(
+          begin: const Offset(0, 0.3),
+          end: const Offset(0, 0),
+        ).animate(
+          CurvedAnimation(
+              parent: _animationController, curve: Curves.easeInOut),
+        ),
+        child: child,
+      ),
     );
   }
 }
