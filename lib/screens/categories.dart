@@ -24,11 +24,12 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(
-        microseconds: 300,
+        milliseconds: 300,
       ),
       lowerBound: 0,
       upperBound: 1,
     );
+    _animationController.forward();
   }
 
   @override
@@ -54,24 +55,30 @@ class _CategoriesScreenState extends State<CategoriesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      padding: const EdgeInsets.all(24),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
+    return AnimatedBuilder(
+      animation: _animationController,
+      child: GridView(
+        padding: const EdgeInsets.all(24),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
+        children: [
+          // availableCategories.map((category) => CategoryGridItem(category: category)).toList()
+          for (final category in availableCategories)
+            CategoryGridItem(
+              category: category,
+              onSelectCategory: () {
+                _selectCategory(context, category);
+              },
+            )
+        ],
       ),
-      children: [
-        // availableCategories.map((category) => CategoryGridItem(category: category)).toList()
-        for (final category in availableCategories)
-          CategoryGridItem(
-            category: category,
-            onSelectCategory: () {
-              _selectCategory(context, category);
-            },
-          )
-      ],
+      builder: (context, child) => Padding(
+          padding: EdgeInsets.only(top: 100 - _animationController.value * 100),
+          child: child),
     );
   }
 }
